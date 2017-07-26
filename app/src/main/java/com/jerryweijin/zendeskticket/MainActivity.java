@@ -25,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private Button sendButton;
     private String ticketSubject;
     private String ticketContent;
-    private String email = "justin.chi@ismartalarm.com";
-    private String token = "h5kVKlGBeJ7vXYLp10fJJ5YHS5tu5TtFWc8b5xRM";
 
     //justin.chi@ismartalarm.com/token:h5kVKlGBeJ7vXYLp10fJJ5YHS5tu5TtFWc8b5xRM
     //private String credential = "Basic anVzdGluLmNoaUBpc21hcnRhbGFybS5jb20vdG9rZW46aDVrVktsR0JlSjd2WFlMcDEwZkpKNVlIUzV0dTVUdEZXYzhiNXhSTQ==";
@@ -35,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private String credential = "Basic amlhZmFuZ3JvbmdAY2hpbmEuaXNtYXJ0YWxhcm0uY29tL3Rva2VuOmg1a1ZLbEdCZUo3dlhZTHAxMGZKSjVZSFM1dHU1VHRGV2M4YjV4Uk0=";
 
     private String apiUrl = "https://ismartalarm.zendesk.com/api/v2/tickets.json";
-    private String json = "{\"ticket\":{\"subject\":\"My printer is on fire!\",\"comment\":{\"body\":\"The smoke is very colorful.\"}}}";
     private MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     @Override
@@ -52,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ticketSubject = ticketSubjectTextView.getText().toString();
                 ticketContent = ticketContentTextView.getText().toString();
-                Toast.makeText(MainActivity.this, ticketSubject + " " + ticketContent, Toast.LENGTH_LONG).show();
+                String json = "{\"ticket\":{\"subject\":" + "\"" + ticketSubject + "\"" + ",\"comment\":{\"body\":" + "\"" + ticketContent + "\"" + "}}}";
+
                 OkHttpClient client = new OkHttpClient();
                 RequestBody body = RequestBody.create(JSON, json);
                 Request request = new Request.Builder()
@@ -65,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
                 client.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-
                     }
 
                     @Override
@@ -74,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.v(TAG, response.body().string());
                         } else {
                             throw new IOException("Unexpected code " + response);
+
                         }
                     }
                 });
